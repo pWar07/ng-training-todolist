@@ -1,0 +1,97 @@
+.login_wrapper {
+  height: 100vh;
+}
+
+.login-container {
+  width: 510px;
+  padding: 48px;
+  background-color: #fff;
+  border-radius: 18px;
+  /* box-shadow: 0px 0px 50px 4px #0000000d; */
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.logo_container {
+  /* width: 64%; */
+  width: 6rem;
+  margin: 0 auto;
+  /* margin-bottom: 64px; */
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.login-form h2 {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  /* margin-bottom: 8px; */
+  color: #495057;
+}
+
+input {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 18px;
+  /* border: 1px solid #e6e9f0; */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.btn-submit:disabled {
+  cursor: not-allowed;
+  opacity: 80%;
+}
+
+.eye-password {
+  cursor: pointer;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+}
+
+.eye-password > span {
+  font-size: 20px;
+  color: #707789;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.register-link .link {
+  color: var(--blue-color);
+  text-decoration: none;
+}
+
+.register-link .link:hover {
+  text-decoration: underline;
+}
+input::placeholder {
+  /* color: var(--black-color);
+  font-size: 16px; */
+}
+.center-button {
+  margin: 0 auto !important;
+  width: 100% !important;
+  text-align: center;
+  justify-content: center;
+}
+.txt-center {
+  text-align: center !important;
+}

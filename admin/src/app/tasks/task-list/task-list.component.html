@@ -1,0 +1,274 @@
+<div class="user-wrapper outlet_wrapper">
+  <div class="row-flex jsb page-header relative">
+    <div class="page-header-text">
+      <h2 class="heading_text tab_name font-18">
+        Tasks ({{ taskObj.total ? taskObj.total : 0 }})
+      </h2>
+    </div>
+
+    <div class="btn_container row-flex jsb">
+      <a routerLink="/task/add">
+        <button class="formButton">Add Task</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="table-container content_wrapper inner-flex inner-flex-medium">
+    <div class="filters_container">
+      <div class="left">
+        <div class="relative" style="width: 18rem">
+          <input
+            type="search"
+            class="form-control"
+            placeholder="Search"
+            [(ngModel)]="taskObj.search"
+            (ngModelChange)="onSearch()"
+          />
+        </div>
+      </div>
+      <div class="right">
+        <div class="" style="width: 10rem">
+          <ng-select
+            class="custom-ng-select"
+            name="status"
+            [(ngModel)]="taskObj.priority"
+            (change)="onSearch()"
+            [clearable]="false"
+          >
+            <ng-option value="">All Priorities</ng-option>
+            <ng-option value="Low">Low</ng-option>
+            <ng-option value="Medium">Medium</ng-option>
+            <ng-option value="High">High</ng-option>
+          </ng-select>
+        </div>
+        <div class="" style="width: 10rem">
+          <ng-select
+            class="custom-ng-select"
+            name="status"
+            [(ngModel)]="taskObj.status"
+            (change)="onSearch()"
+            [clearable]="false"
+          >
+            <ng-option value="">All Status</ng-option>
+            <ng-option value="ongoing">Ongoing</ng-option>
+            <ng-option value="completed">Completed</ng-option>
+            <ng-option value="upcoming">Upcoming</ng-option>
+          </ng-select>
+        </div>
+        <div class="btn_container row-flex jsb">
+          <button class="formButton" (click)="exportAsXLSX()">Export</button>
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="w_5">#</th>
+          <th (click)="changeOrder('u.name')" class="w_20">
+            <div class="dt-column-header">
+              <span class="dt-column-title">Assigned To</span>
+              <span
+                class="dt-column-order {{ getOrderClass('u.name') }}"
+              ></span>
+            </div>
+          </th>
+          <th class="w_15" (click)="changeOrder('t.status')">
+            <div class="dt-column-header">
+              <span class="dt-column-title">Status</span>
+              <span
+                class="dt-column-order {{ getOrderClass('t.status') }}"
+              ></span>
+            </div>
+          </th>
+          <th class="w_15" (click)="changeOrder('t.due_date')">
+            <div class="dt-column-header">
+              <span class="dt-column-title">Due Date</span>
+              <span
+                class="dt-column-order {{ getOrderClass('t.due_date') }}"
+              ></span>
+            </div>
+          </th>
+          <th class="w_15" (click)="changeOrder('t.priority')">
+            <div class="dt-column-header">
+              <span class="dt-column-title">Priority</span>
+              <span
+                class="dt-column-order {{ getOrderClass('t.priority') }}"
+              ></span>
+            </div>
+          </th>
+          <th class="w_15" (click)="changeOrder('t.comments')">
+            <div class="dt-column-header">
+              <span class="dt-column-title">Comments</span>
+              <span
+                class="dt-column-order {{ getOrderClass('t.comments') }}"
+              ></span>
+            </div>
+          </th>
+          <th class="text-center w_20">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody *ngIf="isLoading" class="w-100">
+        <tr *ngFor="let record of [].constructor(5)">
+          <td>
+            <p class="bold shine line">&nbsp;</p>
+          </td>
+          <td>
+            <p class="bold shine line">&nbsp;</p>
+          </td>
+          <td>
+            <p class="bold shine line">&nbsp;</p>
+          </td>
+          <td>
+            <p class="bold shine line">&nbsp;</p>
+          </td>
+          <td>
+            <p class="bold shine line">&nbsp;</p>
+          </td>
+          <td>
+            <p class="bold shine line">&nbsp;</p>
+          </td>
+          <td>
+            <p class="bold shine line">&nbsp;</p>
+          </td>
+        </tr>
+      </tbody>
+
+      <tbody *ngIf="!isLoading && taskList && taskList.length == 0">
+        <tr>
+          <td colspan="10" class="text-center">Whoops...! No Tasks Found...</td>
+        </tr>
+      </tbody>
+
+      <tbody *ngIf="taskList && taskList.length > 0 && !isLoading">
+        <tr *ngFor="let data of taskList; let i = index">
+          <td>{{ (taskObj.page - 1) * taskObj.limit + i + 1 }}</td>
+          <td class="capitalize">{{ data.name }}</td>
+          <td class="capitalize">{{ data.status }}</td>
+          <td>{{ data.due_date_formatted }}</td>
+          <td class="capitalize">{{ data.priority }}</td>
+          <td class="capitalize">{{ data.comments }}</td>
+          <td>
+            <div class="row-flex alc jsc">
+              <div
+                class="edit edit-color cursor_pointer"
+                title="Edit"
+                routerLink="/task/update/{{ data.task_id }}"
+              >
+                <span class="material-symbols-outlined font-22">edit</span>
+              </div>
+              <div
+                class="edit edit-color cursor_pointer"
+                title="Change Status"
+                (click)="changeStatus(data)"
+              >
+                <span class="material-symbols-outlined font-22"
+                  >change_circle</span
+                >
+              </div>
+              <div
+                class="delete delete-color cursor_pointer"
+                title="Delete"
+                (click)="deleteItem(data.task_id)"
+              >
+                <span class="material-symbols-outlined font-22">delete</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <ng-container *ngIf="taskList && taskList.length > 0 && !isLoading">
+    <ul
+      *ngIf="usersPager.pages && usersPager.pages.length > 1"
+      class="pagination"
+      style="margin-top: 2rem"
+    >
+      <ng-container *ngIf="usersPager.currentPage > 1">
+        <li class="page-item pgbtn prev">
+          <a
+            class="page-link prev-button"
+            (click)="setPage(usersPager.currentPage - 1)"
+          >
+            <span class="material-symbols-outlined">arrow_back_ios</span>
+          </a>
+        </li>
+      </ng-container>
+
+      <li
+        class="page-item"
+        *ngFor="let page of usersPager.pages"
+        [ngClass]="{ active: usersPager.currentPage === page }"
+      >
+        <a class="page-link" (click)="setPage(page)">{{ page }}</a>
+      </li>
+
+      <ng-container *ngIf="usersPager.currentPage < usersPager.totalPages">
+        <li class="page-item pgbtn next">
+          <a
+            class="page-link next-button"
+            (click)="setPage(usersPager.currentPage + 1)"
+          >
+            <span class="material-symbols-outlined">navigate_next</span>
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+  </ng-container>
+</div>
+
+<div class="overlay" [class.active]="showModalF" (click)="closeModal()"></div>
+<div class="overlay_model" [class.active]="showModalF">
+  <form
+    name="form"
+    (ngSubmit)="submitForm(overlayForm.form)"
+    #overlayForm="ngForm"
+  >
+    <div class="modal-header">
+      <h2>Edit Schedule</h2>
+      <a class="close-btn" style="cursor: pointer" (click)="closeModal()">
+        <span class="material-symbols-outlined" style="font-weight: bold">
+          close
+        </span>
+      </a>
+    </div>
+
+    <div class="modal-content">
+      <div class="modal-fields">
+        <label for="status">Status</label>
+        <div class="input_fields field">
+          <ng-select
+            placeholder="Select Status"
+            [searchable]="false"
+            [class.invalid]="overlayForm.submitted && !overlayObj.status"
+            [(ngModel)]="overlayObj.status"
+            name="status"
+            [clearable]="false"
+            required
+          >
+            <ng-option value="Pending">Pending</ng-option>
+            <ng-option value="Ongoing">Ongoing</ng-option>
+            <ng-option value="Completed">Completed</ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="btn_container row-flex jsb">
+        <button type="submit" class="formButton">
+          <p>Submit</p>
+        </button>
+      </div>
+      <!-- <div class="submit_button">
+        <button type="submit">
+          <p>Submit</p>
+        </button>
+      </div> -->
+    </div>
+  </form>
+</div>

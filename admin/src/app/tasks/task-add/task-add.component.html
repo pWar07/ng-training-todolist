@@ -1,0 +1,148 @@
+<div class="outlet_wrapper">
+  <div class="row-flex jsb page-header relative">
+    <div class="page-header-text">
+      <h2 class="heading_text outlet_wrappertab_name font-18">
+        {{ taskId ? "Edit Task" : "Add Task" }}
+      </h2>
+    </div>
+  </div>
+
+  <div class="form-container content_wrapper">
+    <form
+      class="create-form"
+      #taskForm="ngForm"
+      (ngSubmit)="submitForm(taskForm)"
+      novalidate
+    >
+      <div class="two-col-grid">
+        <div class="inner-flex inner-flex-small relative">
+          <label class="form-title-label semibold-fonts"
+            >Assigned To <span class="star">*</span></label
+          >
+          <div class="formInput relative">
+            <ng-select
+              placeholder="Select User"
+              [searchable]="false"
+              [class.invalid]="taskForm.submitted && !detailObj.assigned_to"
+              [(ngModel)]="detailObj.assigned_to"
+              name="assigned_to"
+              [clearable]="false"
+              required
+            >
+              <ng-option
+                *ngFor="let user of user_list"
+                [value]="user.user_id"
+                >{{ user.name }}</ng-option
+              >
+            </ng-select>
+            <div
+              *ngIf="taskForm.submitted && !detailObj.assigned_to"
+              class="error-message"
+            >
+              <p>User is <strong>required.</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="inner-flex inner-flex-small relative">
+          <label class="form-title-label semibold-fonts"
+            >Status <span class="star">*</span></label
+          >
+          <div class="formInput relative">
+            <ng-select
+              placeholder="Select Status"
+              [searchable]="false"
+              [class.invalid]="taskForm.submitted && !detailObj.status"
+              [(ngModel)]="detailObj.status"
+              name="status"
+              [clearable]="false"
+              required
+            >
+              <ng-option value="Pending">Pending</ng-option>
+              <ng-option value="Ongoing">Ongoing</ng-option>
+              <ng-option value="Completed">Completed</ng-option>
+            </ng-select>
+            <div
+              *ngIf="taskForm.submitted && !detailObj.status"
+              class="error-message"
+            >
+              <p>Status is <strong>required.</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col-grid">
+        <div class="inner-flex inner-flex-small relative">
+          <label class="form-title-label semibold-fonts"
+            >Due Date <span class="star">*</span></label
+          >
+          <div class="formInput relative">
+            <input
+              class="form-control"
+              type="date"
+              [class.invalid]="taskForm.submitted && !detailObj.due_date"
+              [(ngModel)]="detailObj.due_date"
+              name="due_date"
+              required
+            />
+            <div
+              *ngIf="taskForm.submitted && !detailObj.due_date"
+              class="error-message"
+            >
+              <p>Due Date is <strong>required.</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="inner-flex inner-flex-small relative">
+          <label class="form-title-label semibold-fonts"
+            >Priority <span class="star">*</span></label
+          >
+          <div class="formInput relative">
+            <ng-select
+              placeholder="Select Priority"
+              [searchable]="false"
+              [class.invalid]="taskForm.submitted && !detailObj.priority"
+              [(ngModel)]="detailObj.priority"
+              name="priority"
+              [clearable]="false"
+              required
+            >
+              <ng-option value="Low">Low</ng-option>
+              <ng-option value="Medium">Medium</ng-option>
+              <ng-option value="High">High</ng-option>
+            </ng-select>
+            <div
+              *ngIf="taskForm.submitted && !detailObj.priority"
+              class="error-message"
+            >
+              <p>Priority is <strong>required.</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="one-col-grid">
+        <div class="inner-flex inner-flex-small relative">
+          <label class="form-title-label semibold-fonts"
+            >Description <span class="star"></span
+          ></label>
+          <div class="formInput relative">
+            <textarea
+              class="form-control"
+              rows="3"
+              [(ngModel)]="detailObj.comments"
+              name="comments"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="formButton" [disabled]="isLoading">
+        {{ isLoading ? "Please Wait..." : "Submit" }}
+      </button>
+    </form>
+  </div>
+</div>

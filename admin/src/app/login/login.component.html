@@ -1,0 +1,84 @@
+<section class="login_wrapper row-flex alc jsc">
+  <div class="login-container inner-flex inner-flex-medium">
+    <div class="logo_container">
+      <!-- <img src="assets/images/pre-Filled-Syringe.svg" alt="logo"> -->
+      <img src="assets/images/logo.png" alt="logo" />
+    </div>
+    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" class="login-form">
+      <h2>Log In</h2>
+
+      <div class="relative inner-flex inner-flex-small">
+        <!-- <label for="email">Email</label> -->
+        <div class="relative">
+          <!-- required -->
+          <input
+            placeholder="Email"
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="loginData.email"
+            #email="ngModel"
+            email
+            [class.invalid]="
+              email.invalid && (loginForm.submitted || email.touched)
+            "
+          />
+          <div class="eye-password">
+            <span class="material-symbols-outlined"> mail </span>
+          </div>
+        </div>
+        <div
+          *ngIf="email.invalid && (loginForm.submitted || email.touched)"
+          class="error-message"
+        >
+          <p *ngIf="email.errors?.required">Email is required.</p>
+          <p *ngIf="email.errors?.email">Please enter a valid email.</p>
+        </div>
+      </div>
+
+      <div class="relative inner-flex inner-flex-small">
+        <!-- <label for="password">Password</label> -->
+        <div class="relative">
+          <!-- required -->
+          <input
+            placeholder="Password"
+            type="{{ showPassword ? 'text' : 'password' }}"
+            id="password"
+            name="password"
+            [(ngModel)]="loginData.password"
+            #password="ngModel"
+            minlength="6"
+            [class.invalid]="
+              password.invalid && (loginForm.submitted || password.touched)
+            "
+          />
+
+          <div (click)="togglePasswordVisibility()" class="eye-password">
+            <span *ngIf="!showPassword" class="material-symbols-outlined">
+              visibility
+            </span>
+            <span *ngIf="showPassword" class="material-symbols-outlined">
+              visibility_off
+            </span>
+          </div>
+        </div>
+        <div
+          *ngIf="password.invalid && (loginForm.submitted || password.touched)"
+          class="error-message"
+        >
+          <p *ngIf="password.errors?.required">Password is required.</p>
+          <p *ngIf="password.errors?.minlength">
+            Password must be at least 6 characters long.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <!-- [disabled]="loginForm.invalid || isLoading" -->
+        <button type="submit" class="formButton center-button">
+          <p class="txt-center">{{ isLoading ? "Logging In..." : "Log In" }}</p>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,77 @@
+<div class="app_wrapper">
+  <div class="main-sidebar">
+    <div class="tab-container">
+      <div class="logo">
+        <img src="assets/images/logo.png" alt="" />
+      </div>
+      <div class="nav-tabs">
+        <div class="tabs">
+          <button
+            [routerLink]="'/tasks'"
+            (click)="setTab('tasks')"
+            [class.active]="activeTab == 'tasks'"
+          >
+            <div class="home-main">
+              <div class="home-icon">
+                <span class="material-symbols-outlined"> dashboard </span>
+              </div>
+              <div class="home-title font-16">Tasks</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile">
+      <div class="profile-img">
+        <img src="assets/images/profile.jpg" alt="" />
+      </div>
+      <div class="profile-detail inner-flex">
+        <h4 class="capitalize">
+          {{ adminService.getTokenData().name }}
+        </h4>
+      </div>
+      <div class="profile-logout cursor_pointer" (click)="logout()">
+        <span class="material-symbols-outlined"> power_settings_new </span>
+      </div>
+    </div>
+  </div>
+  <div class="flex menu-container">
+    <div class="row-flex alc jse cursor_pointer relative">
+      <div class="user-img" (click)="toggleMenu($event)">
+        <img src="assets/images/profile.jpg" alt="User" />
+      </div>
+      <div class="dropdown-absolute" [class.show]="menuVisible">
+        <div class="user-profile-1 inner-flex">
+          <h2 class="font-18 color-gray">User Profile</h2>
+          <div class="row-flex alc gap-1rem border-bottom">
+            <div class="user-img-2">
+              <!-- <img src="{{activeUser.profile_pic}}" alt="User" *ngIf="activeUser.profile_pic" /> -->
+              <img src="assets/images/profile.jpg" alt="User" />
+            </div>
+            <div class="details inner-flex line-height-1">
+              <h6 class="capitalize font-14 color-gray">
+                {{ adminService.getTokenData().name }}
+              </h6>
+
+              <div class="row-flex alc">
+                <div class="email font-14 fw-400 color-gray">
+                  <span class="material-symbols-outlined font-14"> mail </span>
+                </div>
+                <p class="font-14 fw-400 color-gray">
+                  {{ adminService.getTokenData().email }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <button (click)="logout()" class="user-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="router_outlet" #content_wrapper>
+    <div class="outlet_container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
